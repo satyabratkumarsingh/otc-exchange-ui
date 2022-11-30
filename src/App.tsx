@@ -1,17 +1,10 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import {
-  createTheme,
   CssBaseline,
-  PaletteMode,
   ThemeProvider,
 } from "@mui/material";
-import { darkTheme } from "./themes/DarkTheme";
-import { lightTheme } from "./themes/LightTheme";
-import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
-import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
-
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import Box from "@mui/material/Box";
 import  Header from './components/header/Header'
 import  Footer from './components/footer/Footer'
@@ -20,26 +13,17 @@ import TradeBooking from './components/TradeBookingComponent';
 import ContractConnect from './components/ContractConnectComponent';
 import useSettings from './themes/useSettings';
 import { createOTCTheme} from './themes/theme'
-import { QueryClientProvider, QueryClient, useQuery } from '@tanstack/react-query';
-import { useTheme } from './hooks/useTheme';
+import { QueryClient, useQuery, QueryClientProvider } from '@tanstack/react-query';
+import { usePersistentContext } from './hooks/persistentHook';
 
 
 const ThemedApp = () => { 
 
-  const { data, isLoading} = useQuery(['themeSelected'], async () =>  String(localStorage.getItem("darkState")), {
-    refetchOnMount: true
-  });
+  const [theme, setTheme] = usePersistentContext('application_theme',  'dark');
 
-  if(isLoading) return <p>Loading....</p>
+  const otcTheme = createOTCTheme(theme);
 
-  //const {isLoading, isError, data} = useTheme();
-  const theme = createOTCTheme(data);
-
-  console.log('========= THEME RETRIEVED   SATYA===========' , theme);
-
-  console.log("@@@@@ THEME RETRIEVED" , theme);
-
-  return ( <ThemeProvider theme={theme}>
+  return ( <ThemeProvider theme={otcTheme}>
     <CssBaseline/>
       <div className="App">
       <Box
@@ -72,14 +56,11 @@ const ThemedApp = () => {
 function App() {
   const { settings } = useSettings();
   const queryClient = new QueryClient();
-  const persister = createSyncStoragePersister({
-    storage: window.localStorage,
-  })
-
   return (
-    <PersistQueryClientProvider client={queryClient} contextSharing={true} persistOptions={{ persister }}>
+    <QueryClientProvider client={queryClient}>
       <ThemedApp></ThemedApp>
-    </PersistQueryClientProvider>
+      <ReactQueryDevtools initialIsOpen={true} />
+    </QueryClientProvider>
   );
 }
 

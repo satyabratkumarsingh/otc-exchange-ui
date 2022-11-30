@@ -1,96 +1,159 @@
-import * as React from 'react';
+import React, {useState, useEffect} from 'react';
 import { Theme, useTheme } from '@mui/material/styles';
-import { SvgIcon } from '@mui/material';
-import MenuItem from '@mui/material/MenuItem';
-import EthIcon from './../../images/ethereum.svg';
-import OutlinedInput from '@mui/material/OutlinedInput';
+import Autocomplete from '@mui/material/Autocomplete';
+import Typography from '@mui/material/Typography';
 import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import MuiMenuItem from '@mui/material/MenuItem';
-import { styled } from '@mui/material/styles';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import Chip from '@mui/material/Chip';
+import {useGetFetchQuery } from './../../hooks/useKeyClient';
+import { EthereumIcon, GoerliIcon, OptimismIcon, SepoliaIcon } from './../../icons/NetworkIcons';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import { usePersistentContext } from './../../hooks/persistentHook'
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
-
-const names = [
-    'Ethereum',
-  ];
-
-function getStyles(name: string, personName: readonly string[], theme: Theme) {
-    return {
-      fontWeight:
-        personName.indexOf(name) === -1
-          ? theme.typography.fontWeightRegular
-          : theme.typography.fontWeightMedium,
-    };
+interface Network {
+  name: string,
+  color: string,
+  description: string,
+  icon: () => JSX.Element
 }
 
+const NetworkSelectButton = () => {
 
-const NetworkSelectButton = () => { 
+  const [network, setNetwork] = usePersistentContext('network',  'Ethereum');
+
+  const [selectedNetwork, setSelectedNetwork] = useState<Network>();
 
 
-    const ChipInputLabel = styled(InputLabel)(({ theme }) => ({
-        '&.MuiInputLabel-root': {
-            marginRight: theme.spacing(1),
-        },
-     }));
+  //const savedNetwork = useGetFetchQuery('network');
 
-    const MenuItem = styled(MuiMenuItem)(({ theme }) => ({
-    '& .MuiSvgIcon-root': {
-        marginRight: theme.spacing(1),
+
+  const networks: Array<Network> = [
+    {
+      name: 'Ethereum',
+      color: '#008672',
+      description: 'Ethereum Mainnet',
+      icon: EthereumIcon
     },
-    }));
+    {
+      name: 'Goerli',
+      color: '#008672',
+      description: 'Goerli Test Network',
+      icon: GoerliIcon
+    },
+    {
+      name: 'Sepolia',
+      color: '#008672',
+      description: 'Sepolia',
+      icon: SepoliaIcon
+    },
+    {
+      name: 'Optimism',
+      color: '#008672',
+      description: 'Optimism',
+      icon: OptimismIcon
+    }
+    
+  ];
 
-  const theme = useTheme();
-  const [personName, setPersonName] = React.useState<string[]>([]);
+  function getNetwork(name: string):  Network {
+    if(name !== null) { 
+        let selectedNetwork = networks.find(x=> x.name === name);
+        if(selectedNetwork != null) { 
+            return selectedNetwork;
+        } else { 
+          return networks[0];
+        }
+    }
+    return networks[0];
+  }
 
-  const handleChange = (event: SelectChangeEvent<typeof personName>) => {
-    const {
-      target: { value },
-    } = event;
-    setPersonName(
-      // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value,
-    );
-  };
+
+  function getNetworkIcon(network: string): () => JSX.Element  {
+    if(networks !== null) { 
+        let selectedNetwork = networks.find(x=> x.name === network);
+        if(selectedNetwork == null) { 
+          return ( ()=> <React.Fragment/>);
+        } else if(selectedNetwork.icon == null) { 
+          return (()=> <React.Fragment/>);
+        }
+        else {
+        return selectedNetwork.icon;
+        }
+    }
+    return (()=> <React.Fragment/>);
+  }
+  useEffect(() => {
+    if (network !== undefined) {
+      if(typeof(network) =='string') {
+        let networkItem = getNetwork(network as string);
+        setSelectedNetwork(networkItem);
+      }
+    }
+  }, [network]);
 
     return (
         <React.Fragment>
         <FormControl sx={{ m: 1, width: 300 }}>
-            <ChipInputLabel id="demo-multiple-checkbox-label">
-                <Chip>
-                Network
-                </Chip>
-            </ChipInputLabel>
-            <Select
-            multiple
-            value={personName}
-            onChange={handleChange}
-            input={<OutlinedInput label="Network" />}
-            renderValue={(selected) => selected.join(', ')}
-            >
-            {names.map((name) => (
-                <MenuItem key={name} value={name}>
-                <SvgIcon>
-                    <path d="M11.944 17.97 4.58 13.62 11.943 24l7.37-10.38-7.372 4.35h.003zM12.056 0 4.69 12.223l7.365 4.354 7.365-4.35L12.056 0z"/>
-                </SvgIcon>
-                {name}
-                </MenuItem>
-            ))}
-            </Select>
+            <Autocomplete
+                    id="from-currency-select"
+                    autoHighlight
+                    options={networks}
+                    value = {selectedNetwork  as Network || null}
+                    getOptionLabel={(option) => option.name}
+                    renderOption={(props, option, { selected }) => (
+                      <li {...props}>
+                        <Box
+                          component={option.icon}
+                          sx={{ width: 17, height: 17, mr: '5px', ml: '-2px' }}
+                        />
+                        <Box
+                          sx={{
+                            flexGrow: 1
+                          }}
+                        >
+                          {option.name}
+                          <br />
+                          <Typography variant="caption">{option.description}</Typography>
+                        </Box>
+                      </li>
+                    )}
+                    renderInput={(params) => (
+                      <div style={{ position: "relative" }}>
+                    {params.inputProps.value && (
+                      <span
+                        style={{
+                          position: "absolute",
+                          transform: "translateY(50%)",
+                          marginLeft: "5px"
+                        }}
+                      >
+                         <Box
+                          component={getNetworkIcon(params.inputProps.value as string)}
+                          sx={{
+                            position: "absolute",
+                            transform: "translateY(50%)",
+                            ml: 5,
+                            mr: 5
+                          }}>
+                            &nbsp;
+                          </Box>
+                      </span>
+                    )}
+                    <TextField
+                      {...params}
+                      label="Network"
+                      variant="outlined"
+                      inputProps={{
+                        ...params.inputProps,
+                        autoComplete: "new-password",
+                        style: { paddingLeft: "20px" } // disable autocomplete and autofill
+                      }}
+                    />
+                  </div>
+                    )}
+                  sx={{ width: '250px' }}
+                  />
       </FormControl>
-        </React.Fragment>
+    </React.Fragment>
     )
 }
 export default NetworkSelectButton;

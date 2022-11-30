@@ -20,35 +20,31 @@ import Fab from '@mui/material/Fab';
 import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import { SvgIcon } from '@mui/material';
-import {useQuery, useMutation, useQueryClient} from '@tanstack/react-query';
+import {useQueryClient} from '@tanstack/react-query';
 import ThemeButton from './ThemeButton';
 import NetworkSelect from './NetworkSelect';
 import WalletSelect from  './WalletSelect';
+import { usePersistentContext } from './../../hooks/persistentHook'
+import { themesList } from 'web3modal';
 
 const pages = ['Trade', 'Stake'];
 const settings = ['Profile', 'Theme', 'Twitter', 'Docs', 'Logout'];
 
 const Header = () => {
 
-  const queryClient = useQueryClient()
+  const [theme, setTheme] = usePersistentContext('application_theme', 'dark');
   const [switchState, setSwitchState] = useState(false);
-  const [darkState, setDarkState] = useState("light");
-  
-  useEffect(() => {
-    const existingPreference = localStorage.getItem("darkState");
-    if (existingPreference) {
-     ( existingPreference === "light")
-        ? setDarkState("light")
-        : setDarkState("dark");
-    } else {
-      setDarkState("light");
-      localStorage.setItem("darkState", "light");
-    }
-  }, []);
 
   const handleThemeChange = () => {
     setSwitchState(switchState === true ? false : true);
-    if (darkState === "light") {
+    if (theme === "light") { 
+      setTheme('dark');
+    } else { 
+      setTheme('light');
+    }
+  };
+
+    /*if (darkState === "light") {
       setDarkState("dark");
       queryClient.setQueryData(['themeSelected'], "dark");
       localStorage.setItem("darkState", "dark");
@@ -56,8 +52,8 @@ const Header = () => {
       setDarkState("light");
       localStorage.setItem("darkState", "light");
       queryClient.setQueryData(['themeSelected'], "light");
-    }
-  };
+    }*/
+  //};
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
@@ -81,6 +77,7 @@ const Header = () => {
    
     setAnchorElUser(null);
   };
+
 
   return (
     <AppBar position="static">

@@ -18,11 +18,11 @@ export default function usePersistentContext(key: any) {
       {
         onMutate: (mutatedData) => {
           const current = data;
-          queryClient.setQueryData(key, mutatedData);
+          queryClient.setQueryData([key], mutatedData);
           return current;
         },
         onError: (_, __, rollback) => {
-          queryClient.setQueryData(key, rollback);
+          queryClient.setQueryData([key], rollback);
         },
       }
     );

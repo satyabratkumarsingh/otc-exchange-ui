@@ -5,16 +5,14 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import { Typography } from '@mui/material';
 import Stack from '@mui/material/Stack';
+import { usePersistentContext } from './../../hooks/persistentHook'
+
 
 const ThemeButton = () => { 
-
-    const { data, isLoading} = useQuery(['themeSelected'], async () =>  String(localStorage.getItem("darkState")), {
-        refetchOnMount: true
-      });
-    
+    const [theme, setTheme] = usePersistentContext('application_theme',  'dark');
     return (
         <div>
-          {data === "light" ? (
+          {theme === "light" ? (
                 <ListItemIcon >
                     <Stack spacing={1} direction="row">
                         <DarkModeIcon></DarkModeIcon>
