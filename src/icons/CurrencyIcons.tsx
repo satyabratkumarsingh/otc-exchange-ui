@@ -4,6 +4,16 @@ import { ReactComponent as UniswapLogo } from './../images/uniswap.svg'
 import { ReactComponent as TetherLogo } from './../images/tether-usdt.svg'
 import { ReactComponent as UsdLogo } from './../images/usd-coin.svg'
 import { ReactComponent as BNBLogo } from './../images/bnb.svg'
+import { ReactComponent as AaveLogo } from './../images/aave.svg'
+import { ReactComponent as ChainLinkLogo } from './../images/chainlink.svg'
+import { ReactComponent as MakerLogo } from './../images/maker.svg'
+import { ReactComponent as ShibaInuLogo } from './../images/shiba-inu.svg'
+import { ReactComponent as MaticLogo } from './../images/matic.svg'
+import { ReactComponent as DaiLogo } from './../images/dai.svg'
+import { ReactComponent as LeoLogo } from './../images/leo.svg'
+import { ReactComponent as WbtcLogo } from './../images/wbtc.svg'
+import { ReactComponent as CronoLogo } from './../images/cronos.svg'
+import { ReactComponent as ApeCoinLogo } from './../images/apecoin.svg'
 
 export const EthIcon = () => {
     return(
@@ -50,6 +60,104 @@ export const BNBIcon = () => {
     <React.Fragment>
       <SvgIcon>
         <BNBLogo />
+      </SvgIcon>
+    </React.Fragment>
+  )
+}
+
+export const AaveIcon = () => {
+  return(
+    <React.Fragment>
+      <SvgIcon>
+        <AaveLogo />
+      </SvgIcon>
+    </React.Fragment>
+  )
+}
+
+export const ChainLinkIcon = () => {
+  return(
+    <React.Fragment>
+      <SvgIcon>
+        <ChainLinkLogo />
+      </SvgIcon>
+    </React.Fragment>
+  )
+}
+
+export const MakerIcon = () => {
+  return(
+    <React.Fragment>
+      <SvgIcon>
+        <MakerLogo />
+      </SvgIcon>
+    </React.Fragment>
+  )
+}
+
+export const ShibaInuIcon = () => {
+  return(
+    <React.Fragment>
+      <SvgIcon>
+        <ShibaInuLogo />
+      </SvgIcon>
+    </React.Fragment>
+  )
+}
+export const MaticIcon = () => {
+  return(
+    <React.Fragment>
+      <SvgIcon>
+        <MaticLogo />
+      </SvgIcon>
+    </React.Fragment>
+  )
+}
+export const DaiIcon = () => {
+  return(
+    <React.Fragment>
+      <SvgIcon>
+        <DaiLogo />
+      </SvgIcon>
+    </React.Fragment>
+  )
+}
+
+export const LeoIcon = () => {
+  return(
+    <React.Fragment>
+      <SvgIcon>
+        <LeoLogo />
+      </SvgIcon>
+    </React.Fragment>
+  )
+}
+
+export const WbtcIcon = () => {
+  return(
+    <React.Fragment>
+      <SvgIcon>
+        <WbtcLogo />
+      </SvgIcon>
+    </React.Fragment>
+  )
+}
+
+export const CronoIcon = () => {
+  return(
+    <React.Fragment>
+      <SvgIcon>
+        <CronoLogo />
+      </SvgIcon>
+    </React.Fragment>
+  )
+}
+
+export const ApeCoinIcon = () => {
+  return(
+    <React.Fragment>
+      <SvgIcon>
+        <ApeCoinLogo />
       </SvgIcon>
     </React.Fragment>
   )

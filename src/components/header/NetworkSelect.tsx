@@ -23,8 +23,34 @@ const NetworkSelectButton = () => {
   const [selectedNetwork, setSelectedNetwork] = useState<Network>();
 
 
-  //const savedNetwork = useGetFetchQuery('network');
+  function getChainIdFromNetwork(networkName: string): string {
+    if(networkName === 'Ethereum') {
+      return '0x1';
+    } else if(networkName === 'Optimism') {
+      return '0xa';
+    } else if(networkName === 'Goerli') {
+      return '0x5';
+    } else if(networkName === 'Sepolia') {
+      return '0xaa36a7';
+    } else { 
+      return '0x1';
+    }
+  }
 
+  const changeNetwork = async (event: any, network: any) => {
+    let chainId = getChainIdFromNetwork(network.name);
+    if (window.ethereum) {
+      try {
+        await window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+          params: [{ chainId: chainId }]
+        });
+        }
+      catch (error) {
+        console.error(error);
+      }
+  }
+}
 
   const networks: Array<Network> = [
     {
@@ -97,8 +123,10 @@ const NetworkSelectButton = () => {
                     id="from-currency-select"
                     autoHighlight
                     options={networks}
+                    onChange={changeNetwork}
                     value = {selectedNetwork  as Network || null}
                     getOptionLabel={(option) => option.name}
+                    isOptionEqualToValue={(option: Network, value) => option.name === value.name}
                     renderOption={(props, option, { selected }) => (
                       <li {...props}>
                         <Box

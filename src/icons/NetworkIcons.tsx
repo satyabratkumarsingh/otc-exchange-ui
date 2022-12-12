@@ -40,7 +40,7 @@ export const SepoliaIcon = () => {
     return(
       <React.Fragment>
          <SvgIcon>
-             <SepoliaLogo />
+             <OptimismLogo />
         </SvgIcon>
       </React.Fragment>
     )

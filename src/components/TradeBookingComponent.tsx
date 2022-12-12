@@ -12,7 +12,8 @@ import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Fab from '@mui/material/Fab';
-import { UniswapIcon, TetherIcon, UsdIcon, BNBIcon } from './../icons/CurrencyIcons';
+import { UniswapIcon, TetherIcon, UsdIcon, BNBIcon, AaveIcon, ChainLinkIcon, 
+  MakerIcon, ShibaInuIcon, MaticIcon, DaiIcon, LeoIcon, WbtcIcon, CronoIcon, ApeCoinIcon } from './../icons/CurrencyIcons';
 
 
 interface Currency {
@@ -44,20 +45,80 @@ const TradeBooking = () => {
     {
       name: 'USDT',
       color: '#b60205',
-      description: 'Tether USD (USDT)',
+      description: 'Tether USD',
       icon: TetherIcon
     },
     {
       name: 'USDC',
       color: '#d93f0b',
-      description: 'USD Coin (USDC)',
+      description: 'USD Coin',
       icon: UsdIcon
     },
     {
       name: 'BNB',
       color: '#0e8a16',
-      description: 'BNB (BNB)',
+      description: 'Binance USD',
       icon: BNBIcon
+    },
+    {
+      name: 'AAVE',
+      color: '#0e8a16',
+      description: 'Aave',
+      icon: AaveIcon
+    },
+    {
+      name: 'LINK',
+      color: '#0e8a16',
+      description: 'ChainLink',
+      icon: ChainLinkIcon
+    },
+    {
+      name: 'MKR',
+      color: '#0e8a16',
+      description: 'Maker',
+      icon: MakerIcon
+    },
+    {
+      name: 'SHIB',
+      color: '#0e8a16',
+      description: 'Shiba Inu',
+      icon: ShibaInuIcon
+    },
+    {
+      name: 'MATIC',
+      color: '#0e8a16',
+      description: 'Polygon',
+      icon: MaticIcon
+    },
+    {
+      name: 'DAI',
+      color: '#0e8a16',
+      description: 'Multi-Collateral Dai',
+      icon: DaiIcon
+    },
+    {
+      name: 'LEO',
+      color: '#0e8a16',
+      description: 'UNUS SED LEO',
+      icon: LeoIcon
+    },
+    {
+      name: 'WBTC',
+      color: '#0e8a16',
+      description: 'Wrapped Bitcoin',
+      icon: WbtcIcon
+    },
+    {
+      name: 'CRO',
+      color: '#0e8a16',
+      description: 'Cronos',
+      icon: CronoIcon
+    },
+    {
+      name: 'APE',
+      color: '#0e8a16',
+      description: 'Ape Coin',
+      icon: ApeCoinIcon
     }
     
   ];

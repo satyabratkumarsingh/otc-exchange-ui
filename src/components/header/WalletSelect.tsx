@@ -41,16 +41,6 @@ const WalletSelectButton = () => {
     const [signedMessage, setSignedMessage] = useState("");
     const [verified, setVerified] = useState();
     const providerOptions = {
-        binancechainwallet: {
-          package: true,
-        },
-        walletconnect: {
-          package: WalletConnect, // required
-          options: {
-            infuraId:  INFURA_ID// required
-          }
-        },
-      
         coinbasewallet: {
           package: CoinbaseWalletSDK, // Required
           options: {
@@ -95,16 +85,12 @@ const WalletSelectButton = () => {
       useEffect(() => {
         if (provider?.on) {
           const handleAccountsChanged = (accounts:any) => {
-            console.log("accountsChanged", accounts);
-            alert(accounts[0]);
             if (accounts) setAccount(accounts[0]);
           };
     
           const handleChainChanged = (_hexChainId:any) => {
             setChainId(_hexChainId);
-            alert(getNetworkFromChainId(_hexChainId));
             setNetwork(getNetworkFromChainId(_hexChainId));
-            //queryClient.setQueryData(['network'], getNetworkFromChainId(_hexChainId));
           };
     
           const handleDisconnect = () => {
