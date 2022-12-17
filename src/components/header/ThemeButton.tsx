@@ -10,6 +10,7 @@ import { usePersistentContext } from './../../hooks/persistentHook'
 
 const ThemeButton = () => { 
     const [theme, setTheme] = usePersistentContext('application_theme',  'dark');
+    console.log('@@@@ THEME BUTTON THEME', theme);
     return (
         <div>
           {theme === "light" ? (

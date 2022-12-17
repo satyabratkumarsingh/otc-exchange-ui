@@ -17,20 +17,22 @@ export const usePersistentState = (localStorageKey: any) => {
       localStorage.setItem(localStorageKey, JSON.stringify(value));
     }, [value]);
   
-    // Expose the value and the updater function.
+    // Expose the value and the updater function
     return [value, setValue];
   };
 
 export const usePersistentContext = (key: any, default_value: any) => {
   const queryClient = useQueryClient();
 
-  const { data } = useQuery<any>([key], () => { 
+ 
+  const { data } = useQuery([key], () => { 
     const localStorageItem = localStorage.getItem(key);
       if (localStorageItem === null) return default_value;
      return localStorage.getItem(key);
     }
   );
- const { mutateAsync : setValue} = useMutation((value: any) =>
+  console.log('%%%%%% QUERY CLIENT DATA', data);
+  const { mutateAsync : setValue} = useMutation((value: any) =>
         {
             localStorage.setItem(key, value);
             return value;
@@ -38,6 +40,7 @@ export const usePersistentContext = (key: any, default_value: any) => {
         {
             onMutate: (mutatedData: any) => {
                 const current = data;
+                //alert(data);
                 queryClient.setQueryData([key], mutatedData);
                 return current;
             },
@@ -47,5 +50,6 @@ export const usePersistentContext = (key: any, default_value: any) => {
         }
 
     )
+    console.log('===================', key + " : " + data);
     return [data, setValue];
  }

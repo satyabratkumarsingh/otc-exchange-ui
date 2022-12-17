@@ -21,6 +21,8 @@ const ThemedApp = () => {
 
   const [theme, setTheme] = usePersistentContext('application_theme',  'dark');
 
+  console.log('@@@@@THEMED APP', theme);
+
   const otcTheme = createOTCTheme(theme);
 
   return ( <ThemeProvider theme={otcTheme}>
@@ -42,7 +44,7 @@ const ThemedApp = () => {
           }}
         >
           <Routes>
-          <Route path="/"></Route>
+          <Route path="/" element={<TradeBooking/>}></Route>
           <Route path="Trade" element={<TradeBooking/>}></Route>
           <Route path="Stake" element={<ContractConnect/>}></Route>
         </Routes>

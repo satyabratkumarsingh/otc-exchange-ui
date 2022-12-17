@@ -6,6 +6,7 @@ import { InjectedConnector } from 'wagmi/connectors/injected'
 import { WagmiConfig, createClient } from "wagmi";
 import { constants } from "fs/promises";
 
+
 // API key for Ethereum node
 // Two popular services are Infura (infura.io) and Alchemy (alchemy.com)
 const infuraId = "a628eb4a2b7e46cea4a5e85ae2f49035";

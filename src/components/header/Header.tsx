@@ -33,6 +33,7 @@ const settings = ['Profile', 'Theme', 'Twitter', 'Docs', 'Logout'];
 const Header = () => {
 
   const [theme, setTheme] = usePersistentContext('application_theme', 'dark');
+  console.log('@@@@ HEADER THEME', theme);
   const [switchState, setSwitchState] = useState(false);
 
   const handleThemeChange = () => {

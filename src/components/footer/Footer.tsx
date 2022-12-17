@@ -13,8 +13,7 @@ import { usePersistentContext } from './../../hooks/persistentHook'
 
 const Footer = () => {
     const theme = useTheme();
-    const account = useQuery(['account']);
-    const accountAdd:String = account.data === null? '' : String(account.data);
+    const [account, setAccount] = usePersistentContext('account',  '');
     const [connectionStatus, setConnectionStatus] = usePersistentContext('connection_status',  false);
     return (
       <AppBar position="static">
@@ -26,7 +25,7 @@ const Footer = () => {
                 <b>Account</b>
             </Typography>
             <Typography>
-              {accountAdd}
+              {account}
             </Typography>
           </Stack>
         </Box>
