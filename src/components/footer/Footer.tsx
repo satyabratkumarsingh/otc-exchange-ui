@@ -8,7 +8,6 @@ import { green, red } from '@mui/material/colors';
 import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
 import NetworkWifiIcon from '@mui/icons-material/NetworkWifi';
-import {useQuery} from '@tanstack/react-query';
 import { usePersistentContext } from './../../hooks/persistentHook'
 
 const Footer = () => {

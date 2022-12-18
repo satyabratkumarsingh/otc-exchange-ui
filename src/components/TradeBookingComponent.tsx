@@ -2,126 +2,34 @@ import * as React from 'react';
 import Grid from '@mui/material/Grid'
 import CardHeader from '@mui/material/CardHeader';
 import Card from '@mui/material/Card';
-import { styled } from '@mui/material/styles';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import SendIcon from '@mui/icons-material/Send';
 import Autocomplete from '@mui/material/Autocomplete';
-import TextField from '@mui/material/TextField';
+import Divider from '@mui/material/Divider';
 import Box from '@mui/material/Box';
-import Fab from '@mui/material/Fab';
-import { UniswapIcon, TetherIcon, UsdIcon, BNBIcon, AaveIcon, ChainLinkIcon, 
-  MakerIcon, ShibaInuIcon, MaticIcon, DaiIcon, LeoIcon, WbtcIcon, CronoIcon, ApeCoinIcon } from './../icons/CurrencyIcons';
+import TextField from '@mui/material/TextField';
+import Chip from '@mui/material/Chip';
+import { useEffect, useState  } from "react";
+import  { Currency, currencies as availableCcies} from './../common/Currencies';
+import { StyledCardHeader } from  './../common/StyledCardHeader';
+import { useWeb3Modal } from './../common/Web3ModalConnector'
 
+const TradeBooking = () => {
 
-interface Currency {
-  name: string,
-  color: string,
-  description: string,
-  icon: () => JSX.Element
+const [connect_Web3Wallet, disconnect_Web3Wallet, provider, library] = useWeb3Modal('satya');
+
+const  currencies: Array<Currency> = availableCcies;
+
+const [balance, setBalance] = useState(0);
+
+const onFromCurrencyChange = (event: React.SyntheticEvent, currency: Currency | null) => {
+  if(currency) {
+    alert(currency.name);
+  }
 }
-
-const TradeBooking = () => { 
-  
-  const StyledCardHeader = styled(CardHeader)(({ theme }) => ({
-    textAlign: 'left',
-    boxShadow: "5px 10px green",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    elevation: 5,
-  }));
-
-  const currencies: Array<Currency> = [
-    {
-      name: 'UNI',
-      color: '#008672',
-      description: 'Uniswap',
-      icon: UniswapIcon
-    },
-    {
-      name: 'USDT',
-      color: '#b60205',
-      description: 'Tether USD',
-      icon: TetherIcon
-    },
-    {
-      name: 'USDC',
-      color: '#d93f0b',
-      description: 'USD Coin',
-      icon: UsdIcon
-    },
-    {
-      name: 'BNB',
-      color: '#0e8a16',
-      description: 'Binance USD',
-      icon: BNBIcon
-    },
-    {
-      name: 'AAVE',
-      color: '#0e8a16',
-      description: 'Aave',
-      icon: AaveIcon
-    },
-    {
-      name: 'LINK',
-      color: '#0e8a16',
-      description: 'ChainLink',
-      icon: ChainLinkIcon
-    },
-    {
-      name: 'MKR',
-      color: '#0e8a16',
-      description: 'Maker',
-      icon: MakerIcon
-    },
-    {
-      name: 'SHIB',
-      color: '#0e8a16',
-      description: 'Shiba Inu',
-      icon: ShibaInuIcon
-    },
-    {
-      name: 'MATIC',
-      color: '#0e8a16',
-      description: 'Polygon',
-      icon: MaticIcon
-    },
-    {
-      name: 'DAI',
-      color: '#0e8a16',
-      description: 'Multi-Collateral Dai',
-      icon: DaiIcon
-    },
-    {
-      name: 'LEO',
-      color: '#0e8a16',
-      description: 'UNUS SED LEO',
-      icon: LeoIcon
-    },
-    {
-      name: 'WBTC',
-      color: '#0e8a16',
-      description: 'Wrapped Bitcoin',
-      icon: WbtcIcon
-    },
-    {
-      name: 'CRO',
-      color: '#0e8a16',
-      description: 'Cronos',
-      icon: CronoIcon
-    },
-    {
-      name: 'APE',
-      color: '#0e8a16',
-      description: 'Ape Coin',
-      icon: ApeCoinIcon
-    }
-    
-  ];
 
 function getCurrencyIcon(ccyCode: string): () => JSX.Element  {
   if(currencies !== null) { 
@@ -153,12 +61,13 @@ return (
               <CardContent>
               <Grid container justifyContent="center">
                 <Grid xs={12}>&nbsp;</Grid>
-                <Grid xs={8}>
+                <Grid xs={6}>
                     <Autocomplete
                     id="from-currency-select"
                     autoHighlight
                     options={currencies}
                     getOptionLabel={(option) => option.name}
+                    onChange = {(event, value) => onFromCurrencyChange(event, value)}
                     renderOption={(props, option, { selected }) => (
                       <li {...props}>
                         <Box
@@ -210,12 +119,24 @@ return (
                     />
                   </div>
                     )}
-                  sx={{ width: '250px' }}
                   />
                 </Grid>
-                <Grid xs={4}>Balance: 300 AAVE</Grid>
+                <Grid xs={1}>&nbsp;</Grid>
+                <Grid xs={5}>
+                  <TextField type="number" label="Quantity"
+                    defaultValue="0">
+                  </TextField>
+                </Grid>
+                <Grid xs={3}>
+                  <Typography variant="caption" display="block" gutterBottom sx={{
+                            my: 0.5
+                          }} color="green"><b>Balance:&nbsp;</b>{balance}</Typography>
+                </Grid>
+                <Grid xs={9}></Grid>
                 <Grid xs={12}>&nbsp;</Grid>
-                <Grid xs={8}>
+                <Grid xs={12}><Divider /></Grid>
+                <Grid xs={12}>&nbsp;</Grid>
+                <Grid xs={6}>
                 <Autocomplete
                     id="from-currency-select"
                     autoHighlight
@@ -272,21 +193,21 @@ return (
                     />
                   </div>
                     )}
-                  sx={{ width: '250px' }}
                   />
                 </Grid>
-                <Grid xs={4}>Balance: 0 LINK</Grid>
+                <Grid xs={6}>&nbsp;</Grid>
               </Grid>
+              
               </CardContent>
               <CardActions disableSpacing>
                 <Grid container justifyContent="right">
                 <Grid xs={8}></Grid>
                 <Grid xs={4}>
                 </Grid>
-                <Grid xs={12}><Button variant="contained" endIcon={<SendIcon />}></Button></Grid>
+                <Grid xs={12}><Button variant="contained" endIcon={<SendIcon />}>Request Transfer</Button></Grid>
                 </Grid>
               </CardActions>
-          </Card> m,<div className=" " />
+          </Card>
       </Grid>
       <Grid xs={4}>&nbsp;</Grid>    
     </Grid>

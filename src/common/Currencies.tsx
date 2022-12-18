@@ -1,4 +1,4 @@
-import { UniswapIcon, TetherIcon, UsdIcon, BNBIcon, AaveIcon, ChainLinkIcon, 
+import { UniswapIcon, TetherIcon, UsdIcon, BNBIcon, AaveIcon, ChainLinkIcon, EthIcon,
     MakerIcon, ShibaInuIcon, MaticIcon, DaiIcon, LeoIcon, WbtcIcon, CronoIcon, ApeCoinIcon } from './../icons/CurrencyIcons';
 
 export  interface Currency {
@@ -9,6 +9,12 @@ export  interface Currency {
   }
   
 export const currencies: Array<Currency> = [
+  {
+    name: 'ETH',
+    color: '#008672',
+    description: 'Ethereum',
+    icon: EthIcon
+  },
     {
       name: 'UNI',
       color: '#008672',

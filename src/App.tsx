@@ -10,7 +10,7 @@ import  Header from './components/header/Header'
 import  Footer from './components/footer/Footer'
 import {Routes, Route} from  "react-router";
 import TradeBooking from './components/TradeBookingComponent';
-import ContractConnect from './components/ContractConnectComponent';
+import Staking from './components/StakingComponent';
 import useSettings from './themes/useSettings';
 import { createOTCTheme} from './themes/theme'
 import { QueryClient, useQuery, QueryClientProvider } from '@tanstack/react-query';
@@ -46,7 +46,7 @@ const ThemedApp = () => {
           <Routes>
           <Route path="/" element={<TradeBooking/>}></Route>
           <Route path="Trade" element={<TradeBooking/>}></Route>
-          <Route path="Stake" element={<ContractConnect/>}></Route>
+          <Route path="Stake" element={<Staking/>}></Route>
         </Routes>
         </Box>
         <Footer />

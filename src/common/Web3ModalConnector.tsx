@@ -22,9 +22,25 @@ function getNetworkFromChainId(chainId: any): string {
       return 'Unknown';
     }
   }
+  const providerOptions = {
+    coinbasewallet: {
+      package: CoinbaseWalletSDK, // Required
+      options: {
+        appName: "Coinbase", // Required
+        infuraId: INFURA_ID, // Required
+        chainId: 1, //4 for Rinkeby, 1 for mainnet (default)
+      },
+    },
+  };
+  const web3Modal =  new Web3Modal({
+        network: "ethereum",
+        theme: 'dark', 
+        cacheProvider: false,
+        providerOptions, // required
+  });
 
 export const useWeb3Modal = (apiKey: String) => {
-
+    //const [web3Modal, setWeb3Modal] = useState<Web3Modal | null>();
     const [theme, setTheme] = usePersistentContext('application_theme', 'dark');
     const [connectionStatus, setConnectionStatus] = usePersistentContext('connection_status',  false);
     const [account, setAccount] = usePersistentContext('account',  '');
@@ -37,26 +53,8 @@ export const useWeb3Modal = (apiKey: String) => {
     const [message, setMessage] = useState("");
     const [signedMessage, setSignedMessage] = useState("");
     const [verified, setVerified] = useState();
-
-    const providerOptions = {
-        coinbasewallet: {
-          package: CoinbaseWalletSDK, // Required
-          options: {
-            appName: "Coinbase", // Required
-            infuraId: INFURA_ID, // Required
-            chainId: 1, //4 for Rinkeby, 1 for mainnet (default)
-          },
-        },
-      };
-     
-      const web3Modal = new Web3Modal({
-        network: "ethereum",
-        theme: 'dark', 
-        cacheProvider: false,
-        providerOptions, // required
-      });
-
-      const disconnect_Web3Wallet = async () => {
+    
+    const disconnect_Web3Wallet = async () => {
         await web3Modal.clearCachedProvider();
         setAccount('');
         setConnectionStatus(false);
