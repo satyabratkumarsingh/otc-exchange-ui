@@ -4,7 +4,7 @@ import Web3Modal from "web3modal";
 import { ethers } from "ethers";
 import WalletConnect from "@walletconnect/web3-provider";
 import CoinbaseWalletSDK from "@coinbase/wallet-sdk";
-import { usePersistentContext } from './../hooks/persistentHook'
+import { usePersistentContext } from './../hooks/persistentHook';
 
 const INFURA_ID = "a628eb4a2b7e46cea4a5e85ae2f49035";
 
@@ -41,6 +41,7 @@ function getNetworkFromChainId(chainId: any): string {
 
 export const useWeb3Modal = (apiKey: String) => {
     //const [web3Modal, setWeb3Modal] = useState<Web3Modal | null>();
+    const [web3ModalProvider, setWeb3ModalProvider] = usePersistentContext('web3_provider', null);
     const [theme, setTheme] = usePersistentContext('application_theme', 'dark');
     const [connectionStatus, setConnectionStatus] = usePersistentContext('connection_status',  false);
     const [account, setAccount] = usePersistentContext('account',  '');
@@ -58,11 +59,15 @@ export const useWeb3Modal = (apiKey: String) => {
         await web3Modal.clearCachedProvider();
         setAccount('');
         setConnectionStatus(false);
+        setWeb3ModalProvider(null);
       };
       const connect_Web3Wallet = async () => {
         try {
             if(connectionStatus ===false) {
             const web3Provider = await web3Modal.connect();
+
+            setWeb3ModalProvider(web3Provider);
+
             const library = new ethers.providers.Web3Provider(web3Provider);
 
             const web3Accounts = await library.listAccounts();
@@ -89,6 +94,7 @@ export const useWeb3Modal = (apiKey: String) => {
           const handleChainChanged = (_hexChainId:any) => {
             setChainId(_hexChainId);
             setNetwork(getNetworkFromChainId(_hexChainId));
+            setWeb3ModalProvider(web3Modal.cachedProvider);
           };
     
           const handleDisconnect = () => {
@@ -109,5 +115,5 @@ export const useWeb3Modal = (apiKey: String) => {
           };
         }
       }, [provider, disconnect_Web3Wallet]);
-    return [connect_Web3Wallet, disconnect_Web3Wallet, provider, library, connectionStatus, network, chainId, account];
+    return [connect_Web3Wallet, disconnect_Web3Wallet, web3ModalProvider, library, connectionStatus, network, chainId, account];
 }

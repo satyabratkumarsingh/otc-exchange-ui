@@ -16,10 +16,15 @@ import { useEffect, useState  } from "react";
 import  { Currency, currencies as availableCcies} from './../common/Currencies';
 import { StyledCardHeader } from  './../common/StyledCardHeader';
 import { useWeb3Modal } from './../common/Web3ModalConnector'
+import { usePersistentContext } from './../hooks/persistentHook';
+import { ethers } from "ethers";
+import EthereumClient from 'web3modal';
 
 const TradeBooking = () => {
 
-const [connect_Web3Wallet, disconnect_Web3Wallet, provider, library] = useWeb3Modal('satya');
+const [connect_Web3Wallet, disconnect_Web3Wallet, provider, library, connectionStatus, network, chainId] = useWeb3Modal('satya');
+const [selectedCcy, setSelectedCcy] = useState<String|null> ();
+const [account, setAccount] = usePersistentContext('account',  '');
 
 const  currencies: Array<Currency> = availableCcies;
 
@@ -27,7 +32,7 @@ const [balance, setBalance] = useState(0);
 
 const onFromCurrencyChange = (event: React.SyntheticEvent, currency: Currency | null) => {
   if(currency) {
-    alert(currency.name);
+    setSelectedCcy(currency.name);
   }
 }
 
@@ -45,6 +50,21 @@ function getCurrencyIcon(ccyCode: string): () => JSX.Element  {
   }
   return (()=> <React.Fragment/>);
 }
+
+useEffect(() => {
+  console.log('******** Trad booking PROVIDER ********', provider);
+  const fetchBalance = async () => {
+    if(provider) { 
+    const balance = await library.getBalance(account);
+    web3.eth.toWei(balance, 'ether')
+    console.log('####### BALANCE ########', balance);
+    }
+  }
+
+  fetchBalance();
+  
+}, [selectedCcy]); 
+
 return (
 <React.Fragment>
     <Grid container justifyContent="center">

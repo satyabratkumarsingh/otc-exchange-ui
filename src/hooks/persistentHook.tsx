@@ -31,7 +31,6 @@ export const usePersistentContext = (key: any, default_value: any) => {
      return localStorage.getItem(key);
     }
   );
-  console.log('%%%%%% QUERY CLIENT DATA', data);
   const { mutateAsync : setValue} = useMutation((value: any) =>
         {
             localStorage.setItem(key, value);
@@ -40,7 +39,6 @@ export const usePersistentContext = (key: any, default_value: any) => {
         {
             onMutate: (mutatedData: any) => {
                 const current = data;
-                //alert(data);
                 queryClient.setQueryData([key], mutatedData);
                 return current;
             },
@@ -50,6 +48,5 @@ export const usePersistentContext = (key: any, default_value: any) => {
         }
 
     )
-    console.log('===================', key + " : " + data);
     return [data, setValue];
  }

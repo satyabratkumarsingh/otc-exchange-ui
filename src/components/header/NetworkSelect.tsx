@@ -108,6 +108,7 @@ const NetworkSelectButton = () => {
     return (()=> <React.Fragment/>);
   }
   useEffect(() => {
+    console.log('%%%%%%%%%%%% NS %%%%%', network);
     if (network !== undefined) {
       if(typeof(network) =='string') {
         let networkItem = getNetwork(network as string);
